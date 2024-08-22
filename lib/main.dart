@@ -17,34 +17,39 @@ class PerguntaApp extends StatefulWidget {
 
 class _PerguntaAppState extends State<PerguntaApp> {
   var indice = 0;
-
+  final List<Map<String, Object>> _pergunta = const [
+    {
+      'texto': "Qual sua cor favorita",
+      'resposta': ["Preto", "Azul", "Amarelo", "Verde"]
+    },
+    {
+      'texto': "Qual seu jogo favorito",
+      'resposta': ["Super Mario", "Sonic", "Minecraft", "Pokemon"]
+    },
+    {
+      'texto': "qual sua linguagem favorita",
+      'resposta': ["Java", "JS", "C#", "Python"]
+    }
+  ];
   void _responder() {
     setState(() {
       indice++;
     });
+    
+  }
+
+  bool get temPerguntaSelecionada {
+    return indice < _pergunta.length;
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, Object>> pergunta = [
-      {
-        'texto': "Qual sua cor favorita",
-        'resposta': ["Preto", "Azul", "Amarelo", "Verde"]
-      },
-      {
-        'texto': "Qual seu jogo favorito",
-        'resposta': ["Super Mario", "Sonic", "Minecraft", "Pokemon"]
-      },
-      {
-        'texto': "qual sua linguagem favorita",
-        'resposta': ["Java", "JS", "C#", "Python"]
-      }
-    ];
-    List<Widget> widgets = [];
-
-    for (String respostas in pergunta[indice].cast()['resposta']) {
-      widgets.add(Respostas(respostas, _responder));
-    }
+    List<String> respostas =temPerguntaSelecionada? _pergunta[indice].cast()['resposta']:[];
+    List<Widget> widgets =
+        respostas.map((t) => Respostas(t, _responder)).toList();
+    //for (String respostaTxt in  respostas) {
+    //widgets.add(Respostas(respostaTxt, _responder));
+    //}
 
     return MaterialApp(
         home: Scaffold(
@@ -56,12 +61,9 @@ class _PerguntaAppState extends State<PerguntaApp> {
         backgroundColor: Color.fromARGB(255, 38, 104, 211),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Questao(pergunta[indice]['texto'].toString()),
-          ...widgets
-        ],
-      ),
+      body: temPerguntaSelecionada? Column(
+        children: [Questao(_pergunta[indice]['texto'].toString()), ...widgets],
+      ):null,
     ));
   }
 }
