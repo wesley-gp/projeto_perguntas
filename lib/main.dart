@@ -1,13 +1,31 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'questao.dart';
 
 main() {
   runApp(PerguntaApp());
 }
 
-class PerguntaApp extends StatelessWidget {
+class PerguntaApp extends StatefulWidget {
   const PerguntaApp({super.key});
+
+ 
+
+  @override
+  State<PerguntaApp> createState() => _PerguntaAppState();
+}
+
+class _PerguntaAppState extends State<PerguntaApp> {
+  var indice = 0;
+
+  void _responder() {
+    setState(() {
+      indice++;
+    });
+    print(indice);
+  }
+
   @override
   Widget build(BuildContext context) {
     final pergunta = [
@@ -27,17 +45,17 @@ class PerguntaApp extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Text(pergunta[0]),
+          Questao(pergunta[indice]),
           ElevatedButton(
-            onPressed: null,
+            onPressed: _responder,
             child: Text("Resposta 1"),
           ),
           ElevatedButton(
-            onPressed: null,
+            onPressed: _responder,
             child: Text("Resposta 2"),
           ),
           ElevatedButton(
-            onPressed: null,
+            onPressed: _responder,
             child: Text("Resposta 3"),
           ),
         ],
